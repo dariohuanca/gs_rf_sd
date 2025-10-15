@@ -1,8 +1,8 @@
-/* receiver_app.h */
+/* receiver_app.h - SIMPLIFIED VERSION */
 #ifndef RECEIVER_APP_H
 #define RECEIVER_APP_H
 
-#include "stm32f4xx_hal.h"
+#include "stm32f7xx_hal.h"
 #include "ax25_protocol.h"
 #include "rf4463.h"
 #include "fatfs.h"
@@ -21,45 +21,15 @@
 
 /* Receiver States */
 typedef enum {
-    RX_STATE_IDLE,
-    RX_STATE_LINKING,
-    RX_STATE_LINKED,
-    RX_STATE_WAITING_SIZE,
-    RX_STATE_RECEIVING_IMAGE
-} RxState_t;
-
-/* Receiver Context Structure */
-typedef struct {
-    RxState_t currentState;
-
-    uint32_t expectedImageSize;
-    uint32_t receivedBytes;
-    uint32_t packetsReceived;
-    uint32_t packetsValid;
-
-    uint32_t lastTxActivityTime;
-
-    char currentImageFilename[32];
-    bool imageFileOpen;
-    FIL imageFile;
-
-    RF4463_HandleTypeDef* hrf;
-    GPIO_TypeDef* led_port;
-    uint16_t led_pin;
-
-} ReceiverContext_t;
+    IDLE,
+    LINKING,
+    LINKED,
+    WAITING_SIZE,
+    RECEIVING_IMAGE
+} RxState;
 
 /* Function Prototypes */
-void Receiver_Init(ReceiverContext_t* ctx, RF4463_HandleTypeDef* hrf, GPIO_TypeDef* led_port, uint16_t led_pin);
-void Receiver_Process(ReceiverContext_t* ctx);
-void Receiver_CheckPcCommands(ReceiverContext_t* ctx);
-bool Receiver_SendAck(ReceiverContext_t* ctx);
-bool Receiver_SendNack(ReceiverContext_t* ctx);
-void Receiver_SendBeaconAck(ReceiverContext_t* ctx);
-void Receiver_SendPhotoCommand(ReceiverContext_t* ctx);
-void Receiver_SendStatusToPC(const char* message);
-bool Receiver_OpenNewImageFile(ReceiverContext_t* ctx);
-void Receiver_CloseImageFile(ReceiverContext_t* ctx);
-void Receiver_ClearFIFO(ReceiverContext_t* ctx);
+void Receiver_Init(RF4463_HandleTypeDef* radio_handle);
+void Receiver_Loop(void);
 
 #endif /* RECEIVER_APP_H */

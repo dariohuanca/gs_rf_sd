@@ -59,7 +59,7 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 /* USER CODE BEGIN PV */
 
 RF4463_HandleTypeDef hrf;
-ReceiverContext_t rxContext;
+
 UART_HandleTypeDef DEBUG_UART_HANDLE;
 
 /* USER CODE END PV */
